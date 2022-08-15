@@ -38,8 +38,7 @@ public class FindAllPersonsRoute extends AbstractRestRouteBuilder {
                     exchange.getIn().setBody(response);
                 })
                 .log("Response for find person with nationalCode ${in.header.nationalCode} ==> ${in.body}")
-                .to(String.format("direct:%s", Routes.FIND_ALL_PERSONS_ROUTE_GATEWAY_OUT))
-                ;
+                .to(String.format("direct:%s", Routes.FIND_ALL_PERSONS_ROUTE_GATEWAY_OUT));
 
         from(String.format("direct:%s", Routes.FIND_ALL_PERSONS_ROUTE_GATEWAY_OUT))
                 .routeId(Routes.FIND_ALL_PERSONS_ROUTE_GATEWAY_OUT)

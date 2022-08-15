@@ -35,8 +35,7 @@ public class DeletePersonRoute extends AbstractRestRouteBuilder {
                 .routeId(Routes.DELETE_PERSON_BY_NationalCode_ROUTE_GATEWAY)
                 .routeGroup(Routes.DELETE_PERSON_BY_NationalCode_ROUTE_GROUP)
                 .log("Response for Delete person with nationalCode ${in.header.nationalCode} ==> ${in.body}")
-               .to(String.format("direct:%s", Routes.DELETE_PERSON_BY_NationalCode_ROUTE_GATEWAY_OUT))
-              ;
+               .to(String.format("direct:%s", Routes.DELETE_PERSON_BY_NationalCode_ROUTE_GATEWAY_OUT));
 
         from(String.format("direct:%s", Routes.DELETE_PERSON_BY_NationalCode_ROUTE_GATEWAY_OUT))
                 .routeId(Routes.DELETE_PERSON_BY_NationalCode_ROUTE_GATEWAY_OUT)

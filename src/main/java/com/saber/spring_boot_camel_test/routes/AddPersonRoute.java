@@ -26,7 +26,7 @@ public class AddPersonRoute extends AbstractRestRouteBuilder {
                 .routeId(Routes.ADD_PERSON_ROUTE)
                 .routeGroup(Routes.ADD_PERSON_ROUTE_GROUP)
                 .to("bean-validator://add-person")
-                .log("Request for Add person with nationalCode ${in.header.nationalCode} ")
+                .log("Request for Add person with body ${in.body} ")
                 .to(String.format("direct:%s", Routes.ADD_PERSON_ROUTE_GATEWAY));
 
         from(String.format("direct:%s", Routes.ADD_PERSON_ROUTE_GATEWAY))

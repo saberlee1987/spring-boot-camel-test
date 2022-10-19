@@ -5,6 +5,10 @@ public interface Routes {
     String SAY_HELLO_ROUTE_GATEWAY = "say-hello-route-gateway" ;
     String SAY_HELLO_ROUTE_GROUP = "say-hello-route-group" ;
 
+    String SAY_HELLO_POST_ROUTE = "say-hello-post-route" ;
+    String SAY_HELLO_POST_ROUTE_GATEWAY = "say-hello-post-route-gateway" ;
+    String SAY_HELLO_POST_ROUTE_GROUP = "say-hello-post-route-group" ;
+
 
     String FIND_PERSON_BY_NationalCode_ROUTE = "find-person-by-nationalCode-route" ;
     String FIND_PERSON_BY_NationalCode_ROUTE_GATEWAY = "find-person-by-nationalCode-route-gateway" ;

@@ -1,10 +1,10 @@
 package com.saber.spring_boot_camel_test.services.impl;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.JsonObject;
 import com.saber.spring_boot_camel_test.dto.hi.HelloDto;
+import com.saber.spring_boot_camel_test.dto.hi.HelloRequestDto;
 import com.saber.spring_boot_camel_test.services.HelloService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.camel.Body;
 import org.apache.camel.Header;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +21,18 @@ public class HelloServiceImpl implements HelloService {
         json.put("firstName", firstName);
         json.put("lastName", lastName);
         log.info("Request for say Hello with parameter {}", json);
+        String message = String.format("Hello %s %s", firstName, lastName);
+        HelloDto helloDto = new HelloDto();
+        helloDto.setMessage(message);
+        log.info("Response for say Hello ===> {}", helloDto);
+        return helloDto;
+    }
+
+    @Override
+    public HelloDto sayHello(@Body HelloRequestDto dto) {
+        String firstName = dto.getFirstName();
+        String lastName = dto.getLastName();
+        log.info("Request for say Hello with body {}", dto);
         String message = String.format("Hello %s %s", firstName, lastName);
         HelloDto helloDto = new HelloDto();
         helloDto.setMessage(message);

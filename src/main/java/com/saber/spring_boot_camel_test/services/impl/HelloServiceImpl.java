@@ -5,6 +5,7 @@ import com.saber.spring_boot_camel_test.dto.hi.HelloRequestDto;
 import com.saber.spring_boot_camel_test.services.HelloService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Body;
+import org.apache.camel.Handler;
 import org.apache.camel.Header;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ import java.util.Map;
 public class HelloServiceImpl implements HelloService {
 
     @Override
-    public HelloDto sayHello(@Header(value = "firstName") String firstName,@Header(value = "lastName") String lastName) {
+    @Handler
+    public HelloDto sayHelloGet(@Header(value = "firstName") String firstName,@Header(value = "lastName") String lastName) {
         Map<String, String> json = new HashMap<>();
         json.put("firstName", firstName);
         json.put("lastName", lastName);
@@ -29,7 +31,7 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
-    public HelloDto sayHello(@Body HelloRequestDto dto) {
+    public HelloDto sayHelloPost(@Body HelloRequestDto dto) {
         String firstName = dto.getFirstName();
         String lastName = dto.getLastName();
         log.info("Request for say Hello with body {}", dto);

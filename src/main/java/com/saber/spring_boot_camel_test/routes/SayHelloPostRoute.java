@@ -26,7 +26,7 @@ public class SayHelloPostRoute extends AbstractRestRouteBuilder {
                 .routeId(Routes.SAY_HELLO_POST_ROUTE)
                 .routeGroup(Routes.SAY_HELLO_POST_ROUTE_GROUP)
                 .log("Request for say Hello with body ===> ${in.body}")
-                .bean(HelloService.class, "sayHello")
+                .bean(HelloService.class, "sayHelloPost")
                 .to(String.format("direct:%s", Routes.SAY_HELLO_POST_ROUTE_GATEWAY));
 
         from(String.format("direct:%s", Routes.SAY_HELLO_POST_ROUTE_GATEWAY))

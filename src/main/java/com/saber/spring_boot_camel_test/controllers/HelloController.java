@@ -58,7 +58,7 @@ public class HelloController {
                             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
             })
     public ResponseEntity<HelloDto> sayHello(@RequestParam(value = "firstName") @NotBlank(message = "firstName is Required") String firstName, @RequestParam(value = "lastName")@NotBlank(message = "lastName is Required") String lastName) {
-        HelloDto helloDto = this.helloService.sayHello(firstName, lastName);
+        HelloDto helloDto = this.helloService.sayHelloGet(firstName, lastName);
         return ResponseEntity.ok(helloDto);
     }
 }

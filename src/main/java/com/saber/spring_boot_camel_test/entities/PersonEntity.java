@@ -1,6 +1,8 @@
 package com.saber.spring_boot_camel_test.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.saber.spring_boot_camel_test.helper.PersianDateJackson;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -38,18 +40,20 @@ public class PersonEntity {
     @Pattern(regexp = "09[0-9]{9}",message = "mobile is invalid")
     private String mobile;
     @Column(name = "createdAt",length = 50)
-    private String createdAt;
+    @JsonSerialize(using = PersianDateJackson.SerializerLocalDateTime.class)
+    private LocalDateTime createdAt;
     @Column(name = "updatedAt",length = 50)
-    private String updatedAt;
+    @JsonSerialize(using = PersianDateJackson.SerializerLocalDateTime.class)
+    private LocalDateTime updatedAt;
 
     @PrePersist
     public void prePersist(){
-        this.createdAt = LocalDateTime.now().toString();
-        this.updatedAt = LocalDateTime.now().toString();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
     @PreUpdate
     public void preUpdate(){
-        this.updatedAt = LocalDateTime.now().toString();
+        this.updatedAt = LocalDateTime.now();
     }
 
 }

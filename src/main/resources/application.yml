@@ -44,7 +44,7 @@ service:
       base-path: /services/springboot/${spring.application.name}
   swagger:
     path: /spring-camel-docs/v2/api-docs
-    version: 'version1.0.0-1401/05/10'
+    version: 'version1.1.0-1402/08/15'
     camel:
       title: 'spring boot camel test'
     springboot:

@@ -1,5 +1,6 @@
 package com.saber.spring_boot_camel_test.services.impl;
 
+import com.saber.spring_boot_camel_test.annotations.SayHelloAnnotation;
 import com.saber.spring_boot_camel_test.dto.hi.HelloDto;
 import com.saber.spring_boot_camel_test.dto.hi.HelloRequestDto;
 import com.saber.spring_boot_camel_test.services.HelloService;
@@ -31,6 +32,7 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
+    @SayHelloAnnotation
     public HelloDto sayHelloPost(@Body HelloRequestDto dto) {
         String firstName = dto.getFirstName();
         String lastName = dto.getLastName();

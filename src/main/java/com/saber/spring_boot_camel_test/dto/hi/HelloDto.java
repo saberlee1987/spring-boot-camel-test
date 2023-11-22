@@ -3,12 +3,16 @@ package com.saber.spring_boot_camel_test.dto.hi;
 import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
 import com.google.gson.ToNumberPolicy;
-import com.saber.spring_boot_camel_test.dto.ValidationDto;
 import lombok.Data;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Data
 public class HelloDto {
     private String message;
+    private BigInteger number;
+    private BigDecimal number2;
 
     @Override
     public String toString() {

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.saber.spring_boot_camel_test.converters.BigDecimalSerializer;
+import com.saber.spring_boot_camel_test.converters.BigIntegerSerializer;
 import com.saber.spring_boot_camel_test.dto.ErrorResponseDto;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
@@ -20,9 +23,12 @@ import org.springframework.boot.actuate.metrics.web.servlet.WebMvcTagsProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Configuration
 public class AppConfig {
@@ -40,6 +46,12 @@ public class AppConfig {
         mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addSerializer(BigInteger.class,new BigIntegerSerializer());
+        simpleModule.addSerializer(BigDecimal.class,new BigDecimalSerializer());
+        mapper.registerModule(simpleModule);
+
         return mapper;
     }
 

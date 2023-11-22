@@ -10,13 +10,15 @@ import org.apache.camel.Handler;
 import org.apache.camel.Header;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service(value = "helloService")
 @Slf4j
 public class HelloServiceImpl implements HelloService {
-
+        /// 45000000000000000000
     @Override
     @Handler
     public HelloDto sayHelloGet(@Header(value = "firstName") String firstName,@Header(value = "lastName") String lastName) {
@@ -27,6 +29,8 @@ public class HelloServiceImpl implements HelloService {
         String message = String.format("Hello %s %s", firstName, lastName);
         HelloDto helloDto = new HelloDto();
         helloDto.setMessage(message);
+        helloDto.setNumber(new BigInteger("9999999999999999999"));
+        helloDto.setNumber2(new BigDecimal("9999999999999999999"));
         log.info("Response for say Hello ===> {}", helloDto);
         return helloDto;
     }

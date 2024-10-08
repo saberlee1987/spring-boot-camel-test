@@ -2,7 +2,6 @@ package com.saber.spring_boot_camel_test.controllers;
 
 import com.saber.spring_boot_camel_test.dto.ErrorResponseDto;
 import com.saber.spring_boot_camel_test.dto.person.*;
-import com.saber.spring_boot_camel_test.entities.PersonEntity;
 import com.saber.spring_boot_camel_test.services.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
 
@@ -65,7 +65,7 @@ public class PersonController {
             }
             , responses = {
             @ApiResponse(responseCode = "200", description = "Success",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PersonEntity.class))}),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PersonDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD_REQUEST",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED",
@@ -83,8 +83,8 @@ public class PersonController {
             @ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
     })
-    public ResponseEntity<PersonEntity> findPersonByNationalCode(@PathVariable(value = "nationalCode") String nationalCode) {
-        PersonEntity responseDto = this.personService.findByNationalCode(nationalCode);
+    public ResponseEntity<PersonDto> findPersonByNationalCode(@PathVariable(value = "nationalCode") String nationalCode) {
+        PersonDto responseDto = this.personService.findByNationalCode(nationalCode);
         return ResponseEntity.ok(responseDto);
     }
 

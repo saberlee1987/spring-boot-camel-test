@@ -4,6 +4,7 @@ import com.saber.spring_boot_camel_test.dto.person.*;
 import com.saber.spring_boot_camel_test.entities.PersonEntity;
 import com.saber.spring_boot_camel_test.exceptions.ResourceDuplicationException;
 import com.saber.spring_boot_camel_test.exceptions.ResourceNotFoundException;
+import com.saber.spring_boot_camel_test.mapper.PersonMapper;
 import com.saber.spring_boot_camel_test.repositories.PersonRepository;
 import com.saber.spring_boot_camel_test.services.PersonService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
+    private final PersonMapper personMapper;
 
     @Override
     @Transactional
@@ -31,14 +33,7 @@ public class PersonServiceImpl implements PersonService {
             log.error("Error for add Person with error {}",String.format("person with nationalCode %s already exist", nationalCode));
             throw new ResourceDuplicationException(String.format("person with nationalCode %s already exist", nationalCode));
         }
-        PersonEntity personEntity = new PersonEntity();
-
-        personEntity.setFirstName(person.getFirstName());
-        personEntity.setLastName(person.getLastName());
-        personEntity.setMobile(person.getMobile());
-        personEntity.setAge(person.getAge());
-        personEntity.setNationalCode(person.getNationalCode());
-
+        PersonEntity personEntity = personMapper.dtoToModel(person);
         this.personRepository.save(personEntity);
         AddPersonResponseDto responseDto = new AddPersonResponseDto();
         responseDto.setCode(0);
@@ -49,7 +44,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional(readOnly = true)
-    public PersonEntity findByNationalCode(String nationalCode) {
+    public PersonDto findByNationalCode(String nationalCode) {
         log.info("Request for find person with nationalCode {}",nationalCode);
         Optional<PersonEntity> optionalPerson = this.personRepository.findByNationalCode(nationalCode);
         if (optionalPerson.isEmpty()) {
@@ -58,15 +53,15 @@ public class PersonServiceImpl implements PersonService {
         }
         PersonEntity personEntity = optionalPerson.get();
         log.info("Response for find person with body {}",personEntity);
-        return personEntity;
+        return personMapper.modelToDto(personEntity);
     }
 
     @Override
     @Transactional
     public DeletePersonResponseDto deleteByNationalCode(@Header(value = "nationalCode") String nationalCode) {
         log.info("Request for delete person with nationalCode {}",nationalCode);
-        PersonEntity personEntity = findByNationalCode(nationalCode);
-        this.personRepository.deleteById(personEntity.getId());
+        PersonDto personDto = findByNationalCode(nationalCode);
+        this.personRepository.deleteById(personDto.getId());
         DeletePersonResponseDto responseDto = new DeletePersonResponseDto();
         responseDto.setCode(0);
         responseDto.setText("person deleted successfully");
@@ -78,12 +73,12 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public UpdatePersonResponseDto updateByNationalCode(@Header(value = "nationalCode") String nationalCode,@Body PersonDto person) {
         log.info("Request for update person with nationalCode {} and body {}",nationalCode,person);
-        PersonEntity personEntity = findByNationalCode(nationalCode);
-        personEntity.setFirstName(person.getFirstName());
-        personEntity.setLastName(person.getLastName());
-        personEntity.setMobile(person.getMobile());
-        personEntity.setAge(person.getAge());
-        this.personRepository.save(personEntity);
+        PersonDto personDto = findByNationalCode(nationalCode);
+        personDto.setFirstName(person.getFirstName());
+        personDto.setLastName(person.getLastName());
+        personDto.setMobile(person.getMobile());
+        personDto.setAge(person.getAge());
+        this.personRepository.save(personMapper.dtoToModel(personDto));
         UpdatePersonResponseDto responseDto = new UpdatePersonResponseDto();
         responseDto.setCode(0);
         responseDto.setText("person updated successfully");
@@ -96,7 +91,7 @@ public class PersonServiceImpl implements PersonService {
     public PersonResponse findAll() {
         List<PersonEntity> entityList = this.personRepository.findAll();
         PersonResponse response = new PersonResponse();
-        response.setPersons(entityList);
+        response.setPersons(personMapper.modelToDto(entityList));
         return response;
     }
 }

@@ -39,6 +39,8 @@ public class PersonEntity {
     @NotBlank(message = "mobile is Required")
     @Pattern(regexp = "09[0-9]{9}",message = "mobile is invalid")
     private String mobile;
+    @Column(name = "email")
+    private String email;
     @Column(name = "createdAt",length = 50)
     @JsonSerialize(using = PersianDateJackson.SerializerLocalDateTime.class)
     private LocalDateTime createdAt;

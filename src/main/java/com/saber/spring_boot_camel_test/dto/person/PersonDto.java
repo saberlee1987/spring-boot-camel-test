@@ -1,16 +1,15 @@
 package com.saber.spring_boot_camel_test.dto.person;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 
 @Data
 public class PersonDto {
-
+    @JsonIgnore
+    private Integer id;
     @NotBlank(message = "firstName is Required")
     @ApiModelProperty(name = "firstName",example = "saber")
     private String firstName;
@@ -29,4 +28,8 @@ public class PersonDto {
     @Pattern(regexp = "\\d{10}",message = "nationalCode must be 10 digit")
     @ApiModelProperty(name = "nationalCode",example = "0079028748")
     private String nationalCode;
+    @NotBlank(message = "email is Required")
+    @Email(message = "email is invalid")
+    @ApiModelProperty(name = "email",example = "saberazizi66@yahoo.com")
+    private String email;
 }

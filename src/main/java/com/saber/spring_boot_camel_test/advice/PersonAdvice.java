@@ -110,4 +110,16 @@ public class PersonAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(errorResponse);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponseDto> handleJsonRuntimeException(RuntimeException ex){
+
+        ErrorResponseDto error = new ErrorResponseDto();
+        error.setCode(ServiceResponseErrorEnum.INTERNAL_SERVICE_ERROR.getCode());
+        error.setText(ServiceResponseErrorEnum.INTERNAL_SERVICE_ERROR.getText());
+        error.setOriginalMessage(String.format("{\"code\":%d,\"text\":\"%s\"}"
+                ,HttpStatus.INTERNAL_SERVER_ERROR.value(),ex.getMessage()));
+        log.error("Error for handleJsonRuntimeException with body {}",error);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
 }

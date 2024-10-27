@@ -12,15 +12,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
 
 @RestController
-@RequestMapping(value = "${service.api.springboot.base-path}/person", produces = MediaType.APPLICATION_JSON)
+@RequestMapping(value = "${service.api.springboot.base-path}/person")
 @Tag(name = "person", description = "person service")
 @RequiredArgsConstructor
 @Validated
@@ -178,6 +180,32 @@ public class PersonController {
     })
     public ResponseEntity<PersonResponse> findAll() {
         PersonResponse response = this.personService.findAll();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/exportPersonToExcel",produces = MediaType.APPLICATION_OCTET_STREAM)
+    @Operation(summary = "exportPersonToExcel", description = "exportPersonToExcel"
+            , responses = {
+             @ApiResponse(responseCode = "400", description = "BAD_REQUEST",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
+            @ApiResponse(responseCode = "404", description = "NOT_FOUND",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
+            @ApiResponse(responseCode = "406", description = "NOT_ACCEPTABLE",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
+            @ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
+            @ApiResponse(responseCode = "503", description = "SERVICE_UNAVAILABLE",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
+            @ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
+    })
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity exportPersonToExcel(HttpServletResponse response) {
+         this.personService.exportPersonToExcel(response);
         return ResponseEntity.ok(response);
     }
 }
